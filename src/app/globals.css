@@ -28,3 +28,17 @@ body {
 @media (max-width: 768px) {
   .hero-text { font-size: 2rem; }
 }
+
+/* Optional: Add to your CSS */
+::selection {
+  background: #f59e0b;
+  color: white;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

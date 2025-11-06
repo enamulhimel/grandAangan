@@ -4,9 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import floor1 from "../../public/floor-1.jpg";
-import floor2 from "../../public/floor-2.png";
-import floor3 from "../../public/floor-3.jpg";
+import floor from '../../publiC/floor-plan1.jpg';
 
 export default function PropertyTabs() {
   const [activeTab, setActiveTab] = useState<"overview" | "amenities" | "floor-plans">("overview");
@@ -162,9 +160,7 @@ export default function PropertyTabs() {
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-6 sm:mb-8">Floor Plans</h2>
             <div className="space-y-10 sm:space-y-12">
               {[
-                { title: "Typical Unit (2450 sq ft)", img: floor1 },
-                { title: "Ground Floor", img: floor2 },
-                { title: "Rooftop Amenities", img: floor3 },
+                { title: "Typical Unit (2450 sq ft)", img: floor },
               ].map((plan, i) => (
                 <motion.div
                   key={i}

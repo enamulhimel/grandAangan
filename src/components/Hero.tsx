@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       <Image
-        src="/hero.jpg"
+        src="/thumb-3.jpg"
         alt="Dreamway Grand Aangan"
         fill
         className="object-cover"

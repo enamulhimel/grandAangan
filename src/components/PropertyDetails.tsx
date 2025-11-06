@@ -6,15 +6,17 @@ import { useState, useEffect, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 
-const thumbnails = ["/thumb-1.jpg", "/thumb-2.jpg", "/thumb-3.jpg", "/thumb-4.jpg", "/thumb-5.jpg"];
+const thumbnails = ["/thumb-1.jpg", "/thumb-2.jpg", "/thumb-3.jpg", "/thumb-4.jpg", "/thumb-5.jpg","/thumb-6.jpg","/thumb-7.jpg"];
 
 const property = {
   name: "Dreamway Grand Aangan",
   address: "Dhaka, Bangladesh",
   price: "$250,000",
-  landArea: "1 Acre",
+  landArea: "25 katha",
   flatSize: "2450 Sq Ft",
   status: "Under Construction",
+  buildingType: "",
+
 };
 
 export default function PropertyDetails() {
@@ -104,7 +106,7 @@ export default function PropertyDetails() {
             <span>{property.address}</span>
           </div>
 
-          <div className="text-2xl sm:text-3xl font-bold text-amber-600 mb-5">{property.price}</div>
+          {/* <div className="text-2xl sm:text-3xl font-bold text-amber-600 mb-5">{property.price}</div> */}
 
           <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-5">
             {[

@@ -13,6 +13,7 @@ export default function PropertyTabs() {
     overview: useRef<HTMLDivElement>(null),
     amenities: useRef<HTMLDivElement>(null),
     "floor-plans": useRef<HTMLDivElement>(null),
+    location: useRef<HTMLDivElement>(null),
   };
 
   // Scroll to section
@@ -55,6 +56,7 @@ export default function PropertyTabs() {
               { id: "overview", label: "Overview" },
               { id: "amenities", label: "Amenities" },
               { id: "floor-plans", label: "Floor Plans" },
+              { id: "location", label: "Location" },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -180,8 +182,103 @@ export default function PropertyTabs() {
               ))}
             </div>
           </motion.div>
+
+         {/* Google Location - PINNED EXACTLY ON THE GRAND AANGAN */}
+          <motion.div
+            ref={refs["location"]}
+            id="location"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="bg-white/70 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border border-white/40"
+          >
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-6 sm:mb-8">
+              Location
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-start">
+              {/* Address + Highlights */}
+              <div className="space-y-5">
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-700 mb-2">
+                    Dreamway Grand Aangan
+                  </h3>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                    Shornali Abahon, Sector 18,<br />
+                    Purbachal New Town, Dhaka<br />
+                    <span className="text-amber-600 font-medium">GPS: 23.8296835, 90.4976997</span>
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="font-medium text-slate-800">Prime Connectivity</h4>
+                  <ul className="space-y-2 text-sm sm:text-base">
+                    {[
+                      "2 min to 300 ft Madani Avenue",
+                      "5 min to American International School",
+                      "7 min to Apollo & Evercare Hospital",
+                      "10 min to Kuril Flyover & Gulshan",
+                      "12 min to Hazrat Shahjalal Intl Airport",
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-slate-600">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="https://maps.google.com/?q=23.8296835,90.4976997"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-medium px-6 py-3 rounded-xl hover:shadow-lg transition-shadow"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    Open in Google Maps
+                  </a>
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=23.8296835,90.4976997"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-slate-700 text-white font-medium px-6 py-3 rounded-xl hover:bg-slate-800 transition-colors"
+                  >
+                    Get Directions
+                  </a>
+                </div>
+              </div>
+
+              {/* Map - NOW PINNED EXACTLY ON THE PROJECT */}
+              <div className="relative aspect-video md:aspect-square rounded-xl overflow-hidden shadow-2xl">
+                <iframe
+                  title="Dreamway Grand Aangan - Exact Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d912.4514872908753!2d90.49769967423723!3d23.829683499070167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c5c19533e14b%3A0x0!2s23.8296835%2C90.4976997!5e0!3m2!1sen!2sbd!4v1735680000000!5m2!1sen!2sbd"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0"
+                />
+                {/* Custom Red Pin Overlay (optional visual boost) */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full pointer-events-none">
+                  <svg className="w-12 h-12 text-red-600 drop-shadow-2xl animate-bounce" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          
+
         </div>
       </div>
     </section>
   );
-}
+} 

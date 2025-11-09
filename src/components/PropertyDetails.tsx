@@ -4,7 +4,7 @@ import { MapPin, X } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import emailjs from "@emailjs/browser";
+
 
 const thumbnails = [
   "/thumb-1.jpg", "/thumb-2.jpg", "/thumb-3.jpg", "/thumb-4.jpg",
@@ -44,45 +44,47 @@ export default function PropertyDetails() {
     setActiveIndex(idx);
   };
 
-  // FORM SUBMIT - NOW 100% WORKING & TYPE-SAFE
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setIsSending(true);
-
-  const form = e.currentTarget;
-  const formData = new FormData(form);
-
-  const templateParams = {
-    from_name: formData.get("name") as string,
-    from_email: formData.get("email") as string,
-    phone: formData.get("phone") as string,
-    address: formData.get("address") as string,
-    visit_date: formData.get("date") as string,
-    visit_time: formData.get("time") as string,
-    property_name: property.name,
-  };
+  setSuccess(false); // Reset success state
 
   try {
-    await emailjs.send(
-      "service_o5q4y08",          // ← YOUR REAL SERVICE ID
-      "template_mn1s8rk",         // ← This one is correct (you already have it)
-      templateParams,
-      "N-_acqBrC-7Yz8rEi"         // ← Your Public Key (correct)
+    const formData = new FormData(e.currentTarget);
+
+    const googleFormData = new FormData();
+    googleFormData.append("entry.1255551185", formData.get("name") || ""); // Full Name
+    googleFormData.append("entry.806982790", formData.get("email") || ""); // Email
+    googleFormData.append("entry.826315012", formData.get("phone") || ""); // Phone
+    googleFormData.append("entry.1706946794", formData.get("address") || ""); // Address
+    googleFormData.append("entry.987492448_year,entry.987492448_month,entry.987492448_day", formData.get("date") || ""); // Date (YYYY-MM-DD)
+    googleFormData.append("entry.2000701440_hour,entry.2000701440_minute", formData.get("time") || ""); // Time (HH:MM)
+
+    // Submit to Google Forms
+    const response = await fetch(
+      "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse", // REPLACE WITH YOUR FORM ID
+      {
+        method: "POST",
+        body: googleFormData,
+        mode: "no-cors", // Important: Google Forms doesn't send CORS headers, so this allows the request
+      }
     );
 
+    // Since mode="no-cors", we can't check response.status, but if no error is thrown, assume success
     setSuccess(true);
+    setIsSending(false);
+
+    // Optional: Close modal after 2 seconds
     setTimeout(() => {
       setIsModalOpen(false);
-      setSuccess(false);
-      form.reset();
+      setSuccess(false); // Reset for next open
     }, 2000);
-  } catch (error: any) {
-    console.error("EmailJS failed:", error);
-    alert("Failed! Please WhatsApp: +880 17xxx-xxxxx");
-  } finally {
+  } catch (error) {
+    console.error("Submission failed:", error);
     setIsSending(false);
+    alert("Error submitting booking. Please try again."); // Or show in UI
   }
-};
+}; 
 
   return (
     <>
@@ -97,7 +99,7 @@ export default function PropertyDetails() {
                 initial={{ opacity: 0, scale: 1.02 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
-                className="relative w-full h-[50vh] sm:h-[60vh] lg:h-[75vh] xl:h-[80vh] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20"
+                className="relative w-full h-[50vh] sm:h-[60vh] lg:h-[75vh] xl:h-[90vh] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20"
               >
                 <Image
                   src={heroSrc}
@@ -109,9 +111,9 @@ export default function PropertyDetails() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white">
-                  <div className="bg-white/20 backdrop-blur-md px-5 py-3 rounded-full inline-block mb-3">
+                  {/* <div className="bg-white/20 backdrop-blur-md px-5 py-3 rounded-full inline-block mb-3">
                     <span className="text-xl font-bold">{activeIndex + 1} / {thumbnails.length}</span>
-                  </div>
+                  </div> */}
                   <h2 className="text-4xl sm:text-5xl font-bold">Dreamway Grand Aangan</h2>
                 </div>
               </motion.div>
@@ -123,7 +125,7 @@ export default function PropertyDetails() {
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => selectThumbnail(i)}
-                    className={`relative aspect-square rounded-2xl overflow-hidden shadow-lg transition-all ${
+                    className={`relative aspect-square rounded-md overflow-hidden shadow-lg transition-all ${
                       activeIndex === i ? "ring-4 ring-amber-500 ring-offset-4 scale-110 z-20" : ""
                     }`}
                   >
@@ -165,12 +167,16 @@ export default function PropertyDetails() {
                 {property.status}
               </div>
 
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-5 rounded-2xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-xl shadow-xl"
+              <div className="">
+                <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSd14ymiQVEyPE7vGeVZjxlM80EcxNddSdER_W2ytXvj9uzaHg/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-5 px-10 rounded-2xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-xl shadow-xl"
               >
                 Book a Site Visit Today
-              </button>
+              </a>
+              </div>
             </motion.div>
           </div>
         </div>
